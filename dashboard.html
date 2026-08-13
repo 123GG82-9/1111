@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>光瑞止付控制台</title>
+  <style>
+    :root { --bg:#f5f7fb; --card:#fff; --line:#dfe5ef; --text:#1f2937; --main:#2563eb; --ok:#15803d; --warn:#b45309; --err:#b91c1c; }
+    body { margin:0; background:var(--bg); color:var(--text); font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif; }
+    .wrap { max-width:1320px; margin:0 auto; padding:16px; }
+    .grid { display:grid; grid-template-columns:1.3fr 1fr; gap:12px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; }
+    .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:8px 0; }
+    .row label { min-width:92px; }
+    input[type="text"], input[type="number"], select, textarea { border:1px solid #c5cedb; border-radius:6px; padding:6px 8px; min-height:32px; }
+    textarea { width:100%; min-height:84px; }
+    button { border:1px solid #b6c2d3; border-radius:6px; background:#fff; padding:6px 10px; cursor:pointer; }
+    button.primary { background:var(--main); color:#fff; border-color:var(--main); }
+    table { width:100%; border-collapse:collapse; }
+    th,td { border:1px solid var(--line); padding:6px; text-align:left; }
+    .muted { color:#64748b; }
+    .status-ok { color:var(--ok); }
+    .status-warn { color:var(--warn); }
+    .status-err { color:var(--err); }
+    .toolbar { display:flex; justify-content:space-between; align-items:center; }
+    .hidden { display:none !important; }
+    #logBox, #errorBox { max-height:220px; overflow:auto; background:#0f172a; color:#e2e8f0; padding:8px; border-radius:6px; white-space:pre-wrap; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="toolbar">
+      <h2>光瑞止付控制台（Dashboard 主流程）</h2>
+      <div class="row">
+        <button id="openAccountsBtn">账号管理</button>
+        <button id="saveTemplateBtn">保存模板</button>
+        <button id="loadTemplateBtn">载入模板</button>
+      </div>
+    </div>
+    <div class="grid">
+      <section class="card">
+        <h3>任务设置</h3>
+        <div class="row">
+          <label>任务类型</label>
+          <select id="taskType">
+            <option value="bank">银行卡止付</option>
+            <option value="third">第三方止付</option>
+          </select>
+          <label>批次大小</label>
+          <input id="batchSize" type="number" min="1" step="1" value="20" />
+          <label>断点起始</label>
+          <input id="startIndex" type="number" min="0" step="1" value="0" />
+        </div>
+        <div class="row">
+          <label>经办警官</label>
+          <input id="operatorInput" type="text" placeholder="多个经办人用逗号或换行分隔" style="flex:1" />
+        </div>
+        <div class="row">
+          <label>Excel 导入</label>
+          <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" />
+          <button id="importExcelBtn">读取数据</button>
+        </div>
+        <div class="row">
+          <label>图片素材库</label>
+          <input id="imageFiles" type="file" accept="image/*" multiple />
+          <button id="saveImagesBtn">保存素材</button>
+        </div>
+        <div class="row">
+          <button class="primary" id="runBtn">开始提交</button>
+          <button id="resumeBtn">断点续传</button>
+          <button id="stopBtn">暂停</button>
+          <button id="clearHistoryBtn">清空历史</button>
+        </div>
+        <p id="statusLine" class="muted">等待操作</p>
+        <h4>数据预览</h4>
+        <div style="max-height:280px; overflow:auto">
+          <table id="previewTable"><thead></thead><tbody></tbody></table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>提交与日志 / 异常中心</h3>
+        <div class="row">
+          <button id="refreshTabBtn">刷新当前标签页连接</button>
+          <button id="exportHistoryBtn">导出历史(JSON)</button>
+          <button id="clearErrorBtn">清空异常</button>
+        </div>
+        <h4>实时日志</h4>
+        <div id="logBox"></div>
+        <h4>异常中心</h4>
+        <div id="errorBox"></div>
+      </section>
+    </div>
+  </div>
+
+  <script src="lib/xlsx.full.min.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
