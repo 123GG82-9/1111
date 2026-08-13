@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>账号管理</title>
+  <style>
+    body { font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; margin:0; background:#f5f7fb; }
+    .wrap { max-width:1100px; margin:0 auto; padding:16px; }
+    .card { background:#fff; border:1px solid #dfe5ef; border-radius:8px; padding:12px; margin-bottom:12px; }
+    .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0; }
+    input, select, button, textarea { min-height:32px; }
+    table { width:100%; border-collapse:collapse; }
+    th,td { border:1px solid #dfe5ef; padding:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <h3>IndexedDB 账号管理</h3>
+      <div class="row">
+        <label>类别</label>
+        <select id="category"><option value="bank">银行卡止付</option><option value="third">第三方止付</option></select>
+        <label>经办警官（批量）</label>
+        <textarea id="operators" placeholder="多个经办人支持逗号/换行" style="flex:1"></textarea>
+      </div>
+      <div class="row">
+        <button id="saveOperatorsBtn">保存经办警官</button>
+        <button id="runBatchBtn">按当前标签页执行批量</button>
+      </div>
+    </section>
+    <section class="card">
+      <h3>账号列表</h3>
+      <div class="row">
+        <input id="account" type="text" placeholder="止付账号" />
+        <input id="name" type="text" placeholder="账号名称/备注" />
+        <button id="addBtn">新增账号</button>
+      </div>
+      <table id="accountTable"><thead><tr><th>ID</th><th>类别</th><th>账号</th><th>名称</th><th>操作</th></tr></thead><tbody></tbody></table>
+    </section>
+  </div>
+  <script src="accounts.js"></script>
+</body>
+</html>
