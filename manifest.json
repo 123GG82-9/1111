@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "光瑞止付",
+  "version": "1.8.1",
+  "description": "国家反诈大数据平台专用，支持银行卡止付、第三方止付、批量填充、账号管理与定时续止付",
+  "permissions": ["activeTab", "scripting", "storage", "tabs", "windows"],
+  "host_permissions": ["<all_urls>"],
+  "action": {"default_title": "光瑞止付"},
+  "background": {"service_worker": "background.js"},
+  "content_scripts": [{"matches": ["<all_urls>"], "js": ["content.js"], "run_at": "document_idle", "all_frames": true}],
+  "icons": {"128": "icons/icon128.png"},
+  "web_accessible_resources": [{"resources": ["lib/xlsx.full.min.js", "accounts.html", "accounts.js"], "matches": ["<all_urls>"]}]
+}
