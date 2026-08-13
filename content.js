@@ -413,25 +413,22 @@
   async function fillForm(rows, start, mode, operatorNames) {
     const batchRows = Array.isArray(rows) ? rows : [];
     const isBank = mode === 'bank';
-    const isThird = mode === 'third';
 
     if (!batchRows.length) {
       return { ok: true, filled: 0, skipped: true };
     }
-
-    const pickerResult = await openOperatorPicker(operatorNames);
-    if (!pickerResult || pickerResult.ok !== true) {
-      return { ok: false, error: pickerResult?.reason || pickerResult?.error || '经办警官选择失败', pickerResult };
+    if (!Array.isArray(operatorNames) || !operatorNames.length) {
+      return { ok: false, error: 'operatorNames 为空，禁止提交' };
     }
 
     try {
       for (let i = 0; i < batchRows.length; i += 1) {
-        await fillOneRow(batchRows[i], { mode, index: start + i, isBank, isThird });
+        await fillOneRow(batchRows[i], { mode, index: start + i, isBank });
       }
-      report('FILL_FORM_SUCCESS', `成功填充 ${batchRows.length} 行`, { startIndex: start, batchSize: batchRows.length, isBank, isThird });
+      report('FILL_FORM_SUCCESS', `成功填充 ${batchRows.length} 行`, { startIndex: start, batchSize: batchRows.length, isBank });
       return { ok: true, filled: batchRows.length };
     } catch (error) {
-      report('FILL_FORM_ERROR', error.message, { startIndex: start, batchSize: batchRows.length, isBank, isThird });
+      report('FILL_FORM_ERROR', error.message, { startIndex: start, batchSize: batchRows.length, isBank });
       throw error;
     }
   }

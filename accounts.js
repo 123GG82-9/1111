@@ -72,7 +72,20 @@
     ui.tableBody.innerHTML = '';
     rows.filter((r) => r.category === currentCategory).forEach((r) => {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${r.id}</td><td>${r.category}</td><td>${r.account || ''}</td><td>${r.name || ''}</td><td><button data-id="${r.id}">删除</button></td>`;
+      const tdId = document.createElement('td');
+      tdId.textContent = String(r.id);
+      const tdCategory = document.createElement('td');
+      tdCategory.textContent = r.category || '';
+      const tdAccount = document.createElement('td');
+      tdAccount.textContent = r.account || '';
+      const tdName = document.createElement('td');
+      tdName.textContent = r.name || '';
+      const tdAction = document.createElement('td');
+      const btn = document.createElement('button');
+      btn.setAttribute('data-id', String(r.id));
+      btn.textContent = '删除';
+      tdAction.appendChild(btn);
+      tr.append(tdId, tdCategory, tdAccount, tdName, tdAction);
       ui.tableBody.appendChild(tr);
     });
     ui.tableBody.querySelectorAll('button[data-id]').forEach((btn) => {

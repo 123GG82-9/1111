@@ -313,6 +313,7 @@
   async function clearHistory() {
     await chrome.storage.local.remove([STORAGE_KEYS.history]);
     addLog('CLEAR_HISTORY', 'info');
+    setStatus('历史记录已清空', 'status-ok');
   }
 
   async function clearErrors() {
@@ -361,7 +362,11 @@
     if (!msg || msg.action !== 'REPORT_STATUS') return;
     const level = msg.level || 'info';
     addLog(msg.type || 'STATUS', level, msg.payload);
-    if (level === 'error') addError(msg.message || msg.type || '未知错误', msg.payload);
+    if (level === 'error') {
+      addError(msg.message || msg.type || '未知错误', msg.payload).catch((error) => {
+        addLog('ADD_ERROR_FAIL', 'error', { message: error.message });
+      });
+    }
   });
 
   ui.importExcelBtn.addEventListener('click', onImportExcel);
